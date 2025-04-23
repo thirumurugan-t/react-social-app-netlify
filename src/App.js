@@ -1,4 +1,4 @@
-import {Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import About from "./Socialmedia app/About";
 import Footer from "./Socialmedia app/Footer";
 import Header from "./Socialmedia app/Header";
@@ -8,38 +8,22 @@ import Nav from "./Socialmedia app/Nav";
 import Postpage from "./Socialmedia app/Postpage";
 import { useState, useEffect } from "react";
 import Newpost from "./Socialmedia app/Newpost";
-// import axios from "axios"; 
-// import api from "./api/posts";
 
 function App() {
   const navigate = useNavigate();
-  const [posts, setposts] = useState([
-    {
-      id: 1,
-      title: "Morning Walk",
-      datetime: "1974-07-01",
-      body: "Going for a walk",
-    },
-    {
-      id: 2,
-      title: "Gym Time",
-      datetime: "1975-07-01",
-      body: "Gone to the gym",
-    },
-    {
-      id: 3,
-      title: "School Day",
-      datetime: "1976-07-01",
-      body: "Going to school",
-    },
-    {
-      id: 4,
-      title: "Early Morning",
-      datetime: "1977-07-01",
-      body: "Woke up early",
-    },
-  ]);
 
+  // Load posts from localStorage on initial render
+  const initialPosts = () => {
+    const savedPosts = localStorage.getItem("posts");
+    return savedPosts ? JSON.parse(savedPosts) : [
+      { id: 1, title: "Morning Walk", datetime: "1974-07-01", body: "Going for a walk" },
+      { id: 2, title: "Gym Time", datetime: "1975-07-01", body: "Gone to the gym" },
+      { id: 3, title: "School Day", datetime: "1976-07-01", body: "Going to school" },
+      { id: 4, title: "Early Morning", datetime: "1977-07-01", body: "Woke up early" }
+    ];
+  };
+
+  const [posts, setposts] = useState(initialPosts);
   const [Search, setSearch] = useState("");
   const [searchresults, setsearchresults] = useState([]);
   const [updatetasks, setupdatetasks] = useState({
@@ -48,6 +32,11 @@ function App() {
     datetime: "",
     body: "",
   });
+
+  // Save posts to localStorage whenever posts change
+  useEffect(() => {
+    localStorage.setItem("posts", JSON.stringify(posts));
+  }, [posts]);
 
   useEffect(() => {
     const filteredposts = posts.filter(
@@ -87,13 +76,20 @@ function App() {
     const ExistingId = Number(id);
     setposts(
       posts.map((post) =>
-        post.id === ExistingId ? { ...post,id: ExistingId, title: updatetasks.title, datetime: new Date().toString().split("G")[0], body: updatetasks.body } : post
+        post.id === ExistingId
+          ? {
+              ...post,
+              id: ExistingId,
+              title: updatetasks.title,
+              datetime: new Date().toString().split("G")[0],
+              body: updatetasks.body,
+            }
+          : post
       )
     );
     setupdatetasks({ id: null, title: "", datetime: "", body: "" });
     navigate("/");
   };
- 
 
   return (
     <>
