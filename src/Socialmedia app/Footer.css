@@ -1,22 +1,31 @@
 /* Footer.css */
 .footer {
+  position: fixed;
     text-align: center;
     padding: 10px;
     background-color: #282c34;
     color: white;
     font-size: 14px;
     width: 100%;
-    margin-top: 18%;
+    bottom: 0px;
+  
+ 
    
 }
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  } */
 
-@media(max-width: 600px) {
+
+/* @media(max-width: 600px) {
+  .footer{
+    bottom: 0px;
+  }
    
     
 }
+
+@media (min-width:601px) and (max-width:1024px) {
+  .footer{
+    bottom: 0px;
+  }
+  
+} */
  
